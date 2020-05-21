@@ -21,6 +21,9 @@
   "projects": {
     "recipe-service": {
       "tags": []
+    },
+    "backend": {
+      "tags": []
     }
   }
 }
