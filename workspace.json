@@ -1,8 +1,66 @@
 {
   "version": 1,
-  "projects": {},
+  "projects": {
+    "recipe-service": {
+      "root": "apps/recipe-service",
+      "sourceRoot": "apps/recipe-service/src",
+      "projectType": "application",
+      "prefix": "recipe-service",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/recipe-service",
+            "main": "apps/recipe-service/src/main.ts",
+            "tsConfig": "apps/recipe-service/tsconfig.app.json",
+            "assets": ["apps/recipe-service/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/recipe-service/src/environments/environment.ts",
+                  "with": "apps/recipe-service/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "recipe-service:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/recipe-service/.eslintrc",
+            "tsConfig": [
+              "apps/recipe-service/tsconfig.app.json",
+              "apps/recipe-service/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/recipe-service/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/recipe-service/jest.config.js",
+            "tsConfig": "apps/recipe-service/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
   "cli": {
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/nest"
   },
   "schematics": {
     "@nrwl/workspace": {
@@ -62,5 +120,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "defaultProject": "recipe-service"
 }

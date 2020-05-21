@@ -18,5 +18,9 @@
       }
     }
   },
-  "projects": {}
+  "projects": {
+    "recipe-service": {
+      "tags": []
+    }
+  }
 }
