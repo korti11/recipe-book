@@ -3,19 +3,21 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { Logger, INestMicroservice } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
 
-import { AppModule } from './app/app.module';
+import { AppModule } from "./app/app.module";
+import { Transport } from "@nestjs/common/enums/transport.enum";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3333;
-  await app.listen(port, () => {
-    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
+  const port: number = parseInt(process.env.PORT, 10) || 3333;
+  const app: INestMicroservice = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.TCP,
+    options: {
+      port: port
+    }
   });
+  app.listen(() => console.log(`Recipe microservice is listening on port: ${port}`));
 }
 
 bootstrap();
