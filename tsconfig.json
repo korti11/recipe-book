@@ -15,7 +15,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@recipe-book/entities": ["libs/entities/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
