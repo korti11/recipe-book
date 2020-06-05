@@ -32,4 +32,13 @@ export class RecipeResolver {
             });
         });
     }
+
+    @Mutation(returns => Boolean, { name: "removeRecipe" })
+    async removeRecipe(@Args("id", { type: () => Int}) id: number): Promise<boolean> {
+        return new Promise<boolean>((res, rej) => {
+            this.recipeService.removeRecipe(id).subscribe((b: boolean) => {
+                res(b);
+            });
+        });
+    }
 }

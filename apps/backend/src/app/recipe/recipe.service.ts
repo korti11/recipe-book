@@ -33,4 +33,9 @@ export class RecipeService {
         return this.client.send<Recipe, RecipeInput>({ cmd: "add" }, input);
     }
 
+    removeRecipe(id: number): Observable<boolean> {
+        Logger.log("Send request for removing a recipe.");
+        return this.client.send<boolean, number>({ cmd: "remove" }, id);
+    }
+
 }
