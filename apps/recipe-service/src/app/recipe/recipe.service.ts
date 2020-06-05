@@ -27,7 +27,7 @@ export class RecipeService {
 
     async getById(id: number): Promise<Recipe> {
         return new Promise<Recipe>((res, rej) => {
-            res(this.testData[id]);
+            res(this.testData.filter(recipe => recipe.id === id)[0]);
         });
     }
 

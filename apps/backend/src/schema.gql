@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Ingredient {
+  name: String!
+  amount: Float!
+  unit: String!
+}
+
+type Recipe {
+  id: Int!
+  title: String!
+  description: String
+  ingredients: [Ingredient!]!
+}
+
+type Query {
+  recipeById(id: Int!): Recipe!
+  recipe: [Recipe!]!
+}
