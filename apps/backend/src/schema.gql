@@ -22,8 +22,12 @@ type Query {
 }
 
 type Mutation {
-  addRecipe(recipeData: RecipeInput!): Recipe!
+  addRecipe(data: RecipeInput!): Recipe!
   removeRecipe(id: Int!): Boolean!
+  updateRecipe(data: RecipeUpdate!): Recipe!
+  addIngredientToRecipe(data: IngredientAdd!): Recipe!
+  updateIngredientOfRecipe(data: IngredientUpdate!): Recipe!
+  removeIngredientOfRecipe(data: IngredientRemove!): Boolean!
 }
 
 input RecipeInput {
@@ -36,4 +40,28 @@ input IngredientInput {
   name: String!
   amount: Float!
   unit: String!
+}
+
+input RecipeUpdate {
+  id: Int!
+  title: String
+  description: String
+}
+
+input IngredientAdd {
+  recipeId: Int!
+  ingredient: IngredientInput!
+}
+
+input IngredientUpdate {
+  recipeId: Int!
+  ingredientId: Int!
+  name: String
+  amount: Float
+  unit: String
+}
+
+input IngredientRemove {
+  recipeId: Int!
+  ingredientId: Int!
 }
