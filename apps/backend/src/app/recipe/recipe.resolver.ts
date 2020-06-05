@@ -1,5 +1,5 @@
-import { Resolver, Args, Int, Query } from '@nestjs/graphql';
-import { Recipe } from '@recipe-book/entities';
+import { Resolver, Args, Int, Query, Mutation } from '@nestjs/graphql';
+import { Recipe, RecipeInput } from '@recipe-book/entities';
 import { RecipeService } from './recipe.service';
 
 @Resolver()
@@ -20,6 +20,15 @@ export class RecipeResolver {
         return new Promise<Recipe[]>((res, rej) => {
             this.recipeService.getAll().subscribe((recipes: Recipe[]) => {
                 res(recipes);
+            });
+        });
+    }
+
+    @Mutation(returns => Recipe, { name: "addRecipe" })
+    async addRecipe(@Args("recipeData") recipeData: RecipeInput) {
+        return new Promise<Recipe>((res, rej) => {
+            this.recipeService.addRecipe(recipeData).subscribe((recipe: Recipe) => {
+                res(recipe);
             });
         });
     }

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ClientProxyFactory, Transport, ClientProxy } from "@nestjs/microservices";
-import { Recipe } from "@recipe-book/entities";
+import { Recipe, RecipeInput } from "@recipe-book/entities";
 import { Observable } from "rxjs";
 import { environment } from '../../environments/environment';
 
@@ -26,6 +26,11 @@ export class RecipeService {
     getById(id: number): Observable<Recipe> {
         Logger.log("Send request for recipe by id to recipe-service.");
         return this.client.send<Recipe, number>({ cmd: "byId" }, id);
+    }
+
+    addRecipe(input: RecipeInput): Observable<Recipe> {
+        Logger.log("Send request for adding a new recipe to recipe-service.");
+        return this.client.send<Recipe, RecipeInput>({ cmd: "add" }, input);
     }
 
 }

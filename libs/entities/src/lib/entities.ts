@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, Float } from "@nestjs/graphql";
+import { ObjectType, Field, Int, Float, InputType } from "@nestjs/graphql";
 
 @ObjectType()
 export class Ingredient {
@@ -27,7 +27,19 @@ export class Recipe {
   ingredients: Ingredient[];
 }
 
-@ObjectType()
+@InputType()
+export class IngredientInput {
+  @Field({ nullable: false })
+  name: string;
+
+  @Field(type => Float)
+  amount: number;
+
+  @Field({ nullable: false })
+  unit: string;
+}
+
+@InputType()
 export class RecipeInput {
   @Field({ nullable: false })
   title: string;
@@ -35,7 +47,7 @@ export class RecipeInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field(type => [Ingredient])
-  ingredients: Ingredient[];
+  @Field(type => [IngredientInput])
+  ingredients: IngredientInput[];
 }
 

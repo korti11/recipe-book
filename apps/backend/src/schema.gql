@@ -19,3 +19,19 @@ type Query {
   recipeById(id: Int!): Recipe!
   recipe: [Recipe!]!
 }
+
+type Mutation {
+  addRecipe(recipeData: RecipeInput!): Recipe!
+}
+
+input RecipeInput {
+  title: String!
+  description: String
+  ingredients: [IngredientInput!]!
+}
+
+input IngredientInput {
+  name: String!
+  amount: Float!
+  unit: String!
+}
