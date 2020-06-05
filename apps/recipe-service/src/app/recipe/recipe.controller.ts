@@ -1,7 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from "@nestjs/microservices";
 import { RecipeService } from './recipe.service';
-import { Recipe } from "@recipe-book/entities";
+import { Recipe, RecipeInput } from "@recipe-book/entities";
 
 @Controller()
 export class RecipeController {
@@ -17,5 +17,11 @@ export class RecipeController {
     async getById(id: number): Promise<Recipe> {
         Logger.log(`Request for the ID: ${id}.`);
         return this.recipeService.getById(id);
+    }
+
+    @MessagePattern({ cmd: "add" })
+    async addRecipe(input: RecipeInput): Promise<Recipe> {
+        Logger.log(`Add new recipe.`);
+        return this.recipeService.addRecipe(input);
     }
 }

@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Recipe } from "@recipe-book/entities";
+import { Recipe, RecipeInput } from "@recipe-book/entities";
 
 @Injectable()
 export class RecipeService {
 
+    private recipeID = 0;
     private testData: Recipe[] = [
         {
-            id: 1,
+            id: this.recipeID++,
             title: "Toast",
             description: "",
             ingredients: [
@@ -28,6 +29,15 @@ export class RecipeService {
     async getById(id: number): Promise<Recipe> {
         return new Promise<Recipe>((res, rej) => {
             res(this.testData.filter(recipe => recipe.id === id)[0]);
+        });
+    }
+
+    async addRecipe(input: RecipeInput): Promise<Recipe> {
+        return new Promise<Recipe>((res, rej) => {
+            let recipe: Recipe = input as Recipe;
+            recipe.id = this.recipeID++;
+            this.testData.push(recipe);
+            res(recipe);
         });
     }
 

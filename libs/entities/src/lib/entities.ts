@@ -27,3 +27,15 @@ export class Recipe {
   ingredients: Ingredient[];
 }
 
+@ObjectType()
+export class RecipeInput {
+  @Field({ nullable: false })
+  title: string;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field(type => [Ingredient])
+  ingredients: Ingredient[];
+}
+
