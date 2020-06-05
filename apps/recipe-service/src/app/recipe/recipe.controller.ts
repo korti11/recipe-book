@@ -24,4 +24,10 @@ export class RecipeController {
         Logger.log(`Add new recipe.`);
         return this.recipeService.addRecipe(input);
     }
+
+    @MessagePattern({ cmd: "remove"})
+    async removeRecipe(id: number): Promise<boolean> {
+        Logger.log(`Request to remove recipe with ID: ${id}`);
+        return this.recipeService.removeRecipe(id);
+    }
 }

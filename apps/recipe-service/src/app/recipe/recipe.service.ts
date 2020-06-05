@@ -41,4 +41,13 @@ export class RecipeService {
         });
     }
 
+    async removeRecipe(id: number): Promise<boolean> {
+        return new Promise<boolean>((res, rej) => {
+            let newData: Recipe[] = this.testData.filter((r) => r.id !== id);
+            let removed: boolean = newData.length < this.testData.length;
+            this.testData = newData;
+            res(removed);
+        });
+    }
+
 }
