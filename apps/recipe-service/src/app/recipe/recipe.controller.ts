@@ -14,7 +14,7 @@ export class RecipeController {
     }
 
     @MessagePattern({ cmd: "byId" })
-    async getById(id: number): Promise<Recipe> {
+    async getById(id: string): Promise<Recipe> {
         Logger.log(`Request for the ID: ${id}.`);
         return this.recipeService.getById(id);
     }
@@ -26,7 +26,7 @@ export class RecipeController {
     }
 
     @MessagePattern({ cmd: "remove" })
-    async removeRecipe(id: number): Promise<boolean> {
+    async removeRecipe(id: string): Promise<boolean> {
         Logger.log(`Request to remove recipe with ID: ${id}`);
         return this.recipeService.removeRecipe(id);
     }

@@ -1,34 +1,53 @@
-import { ObjectType, Field, Int, Float, InputType } from "@nestjs/graphql";
+import { ObjectType, Field, Int, Float, InputType, ID } from "@nestjs/graphql";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { ObjectId } from "mongodb";
+import { Document, Types } from 'mongoose';
 
 @ObjectType()
-export class Ingredient {
-  @Field(type => Int)
-  id: number;
+@Schema()
+export class Ingredient extends Document {
+  @Prop({ required: true })
+  @Field(type => ID)
+  _id: ObjectId;
 
+  @Prop({ required: true })
   @Field({ nullable: false })
   name: string;
 
+  @Prop({ required: true })
   @Field(type => Float)
   amount: number;
 
+  @Prop({ required: true })
   @Field({ nullable: false })
   unit: string;
 }
 
-@ObjectType()
-export class Recipe {
-  @Field(type => Int)
-  id: number;
+// tslint:disable-next-line: typedef
+export const IngredientSchema = SchemaFactory.createForClass(Ingredient);
 
+@ObjectType()
+@Schema()
+export class Recipe extends Document {
+  @Prop({ required: true })
+  @Field(type => ID)
+  _id: ObjectId;
+
+  @Prop({ required: true })
   @Field({ nullable: false })
   title: string;
 
+  @Prop({ required: false })
   @Field({ nullable: true })
   description?: string;
 
+  @Prop(IngredientSchema)
   @Field(type => [Ingredient])
-  ingredients: Ingredient[];
+  ingredients: Types.DocumentArray<Ingredient>;
 }
+
+// tslint:disable-next-line: typedef
+export const RecipeSchema = SchemaFactory.createForClass(Recipe);
 
 @InputType()
 export class IngredientInput {
@@ -56,8 +75,8 @@ export class RecipeInput {
 
 @InputType()
 export class RecipeUpdate {
-  @Field(type => Int)
-  id: number;
+  @Field(type => ID)
+  id: ObjectId;
 
   @Field({ nullable: true })
   title?: string;
@@ -68,8 +87,8 @@ export class RecipeUpdate {
 
 @InputType()
 export class IngredientAdd {
-  @Field(type => Int)
-  recipeId: number;
+  @Field(type => ID)
+  recipeId: ObjectId;
 
   @Field(type => IngredientInput)
   ingredient: IngredientInput;
@@ -77,11 +96,11 @@ export class IngredientAdd {
 
 @InputType()
 export class IngredientUpdate {
-  @Field(type => Int)
-  recipeId: number;
+  @Field(type => ID)
+  recipeId: ObjectId;
 
-  @Field(type => Int)
-  ingredientId: number;
+  @Field(type => ID)
+  ingredientId: ObjectId;
 
   @Field({ nullable: true })
   name?: string;
@@ -95,9 +114,9 @@ export class IngredientUpdate {
 
 @InputType()
 export class IngredientRemove {
-  @Field(type => Int)
-  recipeId: number;
+  @Field(type => ID)
+  recipeId: ObjectId;
 
-  @Field(type => Int)
-  ingredientId: number;
+  @Field(type => ID)
+  ingredientId: ObjectId;
 }

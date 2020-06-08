@@ -3,14 +3,14 @@
 # ------------------------------------------------------
 
 type Ingredient {
-  id: Int!
+  _id: ID!
   name: String!
   amount: Float!
   unit: String!
 }
 
 type Recipe {
-  id: Int!
+  _id: ID!
   title: String!
   description: String
   ingredients: [Ingredient!]!
@@ -43,25 +43,25 @@ input IngredientInput {
 }
 
 input RecipeUpdate {
-  id: Int!
+  id: ID!
   title: String
   description: String
 }
 
 input IngredientAdd {
-  recipeId: Int!
+  recipeId: ID!
   ingredient: IngredientInput!
 }
 
 input IngredientUpdate {
-  recipeId: Int!
-  ingredientId: Int!
+  recipeId: ID!
+  ingredientId: ID!
   name: String
   amount: Float
   unit: String
 }
 
 input IngredientRemove {
-  recipeId: Int!
-  ingredientId: Int!
+  recipeId: ID!
+  ingredientId: ID!
 }
