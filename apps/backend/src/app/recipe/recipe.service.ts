@@ -23,9 +23,9 @@ export class RecipeService {
         return this.client.send<Recipe[], any>({ cmd: "all" }, {});
     }
 
-    getById(id: number): Observable<Recipe> {
+    getById(id: string): Observable<Recipe> {
         Logger.log("Send request for recipe by id to the recipe-service.");
-        return this.client.send<Recipe, number>({ cmd: "byId" }, id);
+        return this.client.send<Recipe, string>({ cmd: "byId" }, id);
     }
 
     addRecipe(input: RecipeInput): Observable<Recipe> {
@@ -33,9 +33,9 @@ export class RecipeService {
         return this.client.send<Recipe, RecipeInput>({ cmd: "add" }, input);
     }
 
-    removeRecipe(id: number): Observable<boolean> {
+    removeRecipe(id: string): Observable<boolean> {
         Logger.log("Send request for removing a recipe to the recipe-service.");
-        return this.client.send<boolean, number>({ cmd: "remove" }, id);
+        return this.client.send<boolean, string>({ cmd: "remove" }, id);
     }
 
     updateRecipe(input: RecipeUpdate): Observable<Recipe> {

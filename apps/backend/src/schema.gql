@@ -17,13 +17,13 @@ type Recipe {
 }
 
 type Query {
-  recipeById(id: Int!): Recipe!
+  recipeById(id: String!): Recipe!
   recipe: [Recipe!]!
 }
 
 type Mutation {
   addRecipe(data: RecipeInput!): Recipe!
-  removeRecipe(id: Int!): Boolean!
+  removeRecipe(id: String!): Boolean!
   updateRecipe(data: RecipeUpdate!): Recipe!
   addIngredientToRecipe(data: IngredientAdd!): Recipe!
   updateIngredientOfRecipe(data: IngredientUpdate!): Recipe!

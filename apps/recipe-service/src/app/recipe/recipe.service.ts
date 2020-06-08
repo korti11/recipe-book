@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Recipe, RecipeInput, RecipeUpdate, Ingredient, IngredientAdd, IngredientUpdate, IngredientRemove } from "@recipe-book/entities";
+import { Recipe, RecipeInput, RecipeUpdate, Ingredient, IngredientAdd, IngredientUpdate, IngredientRemove, DRecipe, DIngredient } from "@recipe-book/entities";
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ObjectId } from "mongodb";
@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 @Injectable()
 export class RecipeService {
 
-    constructor(@InjectModel(Recipe.name) private recipeModel: Model<Recipe>) {}
+    constructor(@InjectModel(Recipe.name) private recipeModel: Model<DRecipe>) {}
 
     async getAll(): Promise<Recipe[]> {
         return this.recipeModel.find().exec();
@@ -19,7 +19,7 @@ export class RecipeService {
 
     async addRecipe(input: RecipeInput): Promise<Recipe> {
         let recipe: Recipe = input as Recipe;
-        let createdRecipe: Recipe = new this.recipeModel(recipe);
+        let createdRecipe: DRecipe = new this.recipeModel(recipe);
         return createdRecipe.save();
     }
 
@@ -37,29 +37,29 @@ export class RecipeService {
 
     async addIngredient(data: IngredientAdd): Promise<Recipe> {
         return new Promise<Recipe>((res, rej) => {
-            this.getById(data.recipeId).then((recipe) => {
-                let ingredient: Ingredient = data.ingredient as Ingredient;
+            this.getById(data.recipeId).then((recipe: DRecipe) => {
+                let ingredient: DIngredient = data.ingredient as DIngredient;
                 recipe.ingredients.push(ingredient);
-                res(recipe);
+                recipe.save().then((r: Recipe) => res(r)).catch((reason) => rej(reason));
             });
         });
     }
 
     async updateIngredient(data: IngredientUpdate): Promise<Recipe> {
         return new Promise<Recipe>((res, rej) => {
-            this.getById(data.recipeId).then((recipe) => {
-                let ingredient: Ingredient = recipe.ingredients.id(data.ingredientId);
+            this.getById(data.recipeId).then((recipe: DRecipe) => {
+                let ingredient: DIngredient = recipe.ingredients.id(data.ingredientId);
                 ingredient.name = data.name ?? ingredient.name;
                 ingredient.amount = data.amount ?? ingredient.amount;
                 ingredient.unit = data.unit ?? ingredient.unit;
-                recipe.save().then((r) => res(r)).catch((reason) => rej(reason));
+                recipe.save().then((r: Recipe) => res(r)).catch((reason) => rej(reason));
             });
         });
     }
 
     async removeIngredient(data: IngredientRemove): Promise<boolean> {
         return new Promise<boolean>((res, rej) => {
-            this.getById(data.recipeId).then((recipe) => {
+            this.getById(data.recipeId).then((recipe: DRecipe) => {
                 recipe.ingredients.id(data.ingredientId).remove();
                 recipe.save().then(() => res(true)).catch(() => res(false));
             });

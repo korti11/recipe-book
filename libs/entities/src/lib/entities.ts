@@ -3,51 +3,65 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ObjectId } from "mongodb";
 import { Document, Types } from 'mongoose';
 
-@ObjectType()
 @Schema()
-export class Ingredient extends Document {
+export class DIngredient extends Document {
   @Prop({ required: true })
-  @Field(type => ID)
-  _id: ObjectId;
-
-  @Prop({ required: true })
-  @Field({ nullable: false })
   name: string;
 
   @Prop({ required: true })
-  @Field(type => Float)
   amount: number;
 
   @Prop({ required: true })
+  unit: string;
+}
+
+@ObjectType()
+export class Ingredient {
+  @Field(type => ID)
+  _id: ObjectId;
+
+  @Field({ nullable: false })
+  name: string;
+
+  @Field(type => Float)
+  amount: number;
+
   @Field({ nullable: false })
   unit: string;
 }
 
 // tslint:disable-next-line: typedef
-export const IngredientSchema = SchemaFactory.createForClass(Ingredient);
+export const IngredientSchema = SchemaFactory.createForClass(DIngredient);
 
-@ObjectType()
 @Schema()
-export class Recipe extends Document {
+export class DRecipe extends Document {
   @Prop({ required: true })
-  @Field(type => ID)
-  _id: ObjectId;
-
-  @Prop({ required: true })
-  @Field({ nullable: false })
   title: string;
 
   @Prop({ required: false })
+  description?: string;
+
+  @Prop({ type: [IngredientSchema], required: true })
+  ingredients: Types.DocumentArray<DIngredient>;
+}
+
+@ObjectType()
+export class Recipe {
+  @Field(type => ID)
+  _id: ObjectId;
+
+  @Field({ nullable: false })
+  title: string;
+
   @Field({ nullable: true })
   description?: string;
 
-  @Prop(IngredientSchema)
   @Field(type => [Ingredient])
-  ingredients: Types.DocumentArray<Ingredient>;
+  ingredients: Ingredient[];
 }
 
 // tslint:disable-next-line: typedef
-export const RecipeSchema = SchemaFactory.createForClass(Recipe);
+export const RecipeSchema = SchemaFactory.createForClass(DRecipe);
 
 @InputType()
 export class IngredientInput {
