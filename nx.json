@@ -27,6 +27,13 @@
     },
     "entities": {
       "tags": []
+    },
+    "recipe-book": {
+      "tags": []
+    },
+    "recipe-book-e2e": {
+      "tags": [],
+      "implicitDependencies": ["recipe-book"]
     }
   }
 }
